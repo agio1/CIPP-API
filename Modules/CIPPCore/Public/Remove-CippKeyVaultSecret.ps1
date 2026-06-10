@@ -24,7 +24,7 @@ function Remove-CippKeyVaultSecret {
     try {
         if (-not $VaultName) {
             if ($env:WEBSITE_DEPLOYMENT_ID) {
-                $VaultName = ($env:WEBSITE_DEPLOYMENT_ID -split '-')[0]
+                $VaultName = $env:WEBSITE_DEPLOYMENT_ID
             } else {
                 throw 'VaultName not provided and WEBSITE_DEPLOYMENT_ID environment variable not set'
             }
