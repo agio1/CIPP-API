@@ -17,10 +17,12 @@ function Set-CIPPSAMAdminRoles {
 
     $ActionLogs = [System.Collections.Generic.List[object]]::new()
 
-    # Default roles always assigned for all tenants
-    $DefaultRoles = @(
-        [PSCustomObject]@{ value = '17315797-102d-40b4-93e0-432062caca18'; label = 'Compliance Administrator' }
-    )
+    # AGIO FORK PATCH: upstream hardcodes Compliance Administrator as a default role that is
+    # force-assigned into every customer tenant (added upstream 2026-05-28, commit aefa69b0,
+    # CIPP 10.5.0). Adding directory roles into client environments on the fly breaks client
+    # trust, so we assign ONLY the roles explicitly configured in the SAMRoles table.
+    # See docs/cipp-fork-patches.md (Patch 2). Re-apply after any upstream merge.
+    $DefaultRoles = @()
 
     $SAMRolesTable = Get-CIPPTable -tablename 'SAMRoles'
     $Roles = Get-CIPPAzDataTableEntity @SAMRolesTable
